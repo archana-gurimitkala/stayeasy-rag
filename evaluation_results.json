@@ -1,0 +1,223 @@
+{
+  "summary": {
+    "total_cases": 10,
+    "retrieval_accuracy": "10/10",
+    "mrr": 0.95,
+    "avg_relevance": 5.0,
+    "avg_correctness": 4.9,
+    "avg_faithfulness": 5.0,
+    "overall_score": 98.6
+  },
+  "details": [
+    {
+      "question": "When was StayEasy founded and by whom?",
+      "expected_source": "company.md",
+      "retrieved_sources": [
+        "company.md",
+        "company.md",
+        "for_hosts.md",
+        "superhost.md",
+        "for_guests.md"
+      ],
+      "retrieval_hit": true,
+      "rank": 1,
+      "reciprocal_rank": 1.0,
+      "expected_answer": "StayEasy was founded in 2021 by Maria Rodriguez and James Chen in San Francisco.",
+      "actual_answer": "StayEasy was founded in 2021 by Maria Rodriguez and James Chen in San Francisco.",
+      "scores": {
+        "answer_relevance": 5,
+        "answer_correctness": 5,
+        "faithfulness": 5
+      }
+    },
+    {
+      "question": "What is the guest service fee?",
+      "expected_source": "pricing_fees.md",
+      "retrieved_sources": [
+        "pricing_fees.md",
+        "pricing_fees.md",
+        "for_guests.md",
+        "for_hosts.md",
+        "for_hosts.md"
+      ],
+      "retrieval_hit": true,
+      "rank": 1,
+      "reciprocal_rank": 1.0,
+      "expected_answer": "The guest service fee is 10-14% of the booking subtotal.",
+      "actual_answer": "The guest service fee is 10-14% of the booking subtotal and covers 24/7 support, secure payments, and platform costs. It is shown before you book.",
+      "scores": {
+        "answer_relevance": 5,
+        "answer_correctness": 5,
+        "faithfulness": 5
+      }
+    },
+    {
+      "question": "What is the host service fee percentage?",
+      "expected_source": "for_hosts.md",
+      "retrieved_sources": [
+        "for_hosts.md",
+        "for_guests.md",
+        "pricing_fees.md",
+        "pricing_fees.md",
+        "pricing_fees.md"
+      ],
+      "retrieval_hit": true,
+      "rank": 1,
+      "reciprocal_rank": 1.0,
+      "expected_answer": "The host service fee is 3% of the booking subtotal.",
+      "actual_answer": "The host service fee percentage is 3% per booking.",
+      "scores": {
+        "answer_relevance": 5,
+        "answer_correctness": 5,
+        "faithfulness": 5
+      }
+    },
+    {
+      "question": "What are the Superhost requirements?",
+      "expected_source": "superhost.md",
+      "retrieved_sources": [
+        "superhost.md",
+        "superhost.md",
+        "superhost.md",
+        "superhost.md",
+        "superhost.md"
+      ],
+      "retrieval_hit": true,
+      "rank": 1,
+      "reciprocal_rank": 1.0,
+      "expected_answer": "Superhosts need 10+ completed bookings, 90%+ response rate, less than 1% cancellation rate, and 4.8+ star rating.",
+      "actual_answer": "To become a Superhost, you must meet ALL of the following criteria:\n\n1. **Experience**: \n   - Completed at least 10 bookings OR \n   - 3+ bookings totaling 100+ nights in the past year.\n\n2. **Response Rate**: \n   - 90% or higher response rate.\n   - Respond to inquiries within 24 hours.\n\n3. **Cancellation Rate**: \n   - Less than 1% cancellation rate.\n   - No cancellations in the past year (exceptions for emergencies).\n\n4. **Overall Rating**: \n   - 4.8+ star average rating.",
+      "scores": {
+        "answer_relevance": 5,
+        "answer_correctness": 4,
+        "faithfulness": 5
+      }
+    },
+    {
+      "question": "What is the cancellation policy for flexible bookings?",
+      "expected_source": "cancellation.md",
+      "retrieved_sources": [
+        "faqs.md",
+        "cancellation.md",
+        "cancellation.md",
+        "cancellation.md",
+        "cancellation.md"
+      ],
+      "retrieval_hit": true,
+      "rank": 2,
+      "reciprocal_rank": 0.5,
+      "expected_answer": "Flexible policy gives full refund if cancelled 24+ hours before check-in, 50% refund if less than 24 hours.",
+      "actual_answer": "The cancellation policy for flexible bookings is as follows:\n- Full refund if cancelled 24+ hours before check-in.\n- 50% refund if cancelled less than 24 hours before check-in.\n- No refund after check-in.",
+      "scores": {
+        "answer_relevance": 5,
+        "answer_correctness": 5,
+        "faithfulness": 5
+      }
+    },
+    {
+      "question": "How much property damage protection do hosts get?",
+      "expected_source": "for_hosts.md",
+      "retrieved_sources": [
+        "for_hosts.md",
+        "faqs.md",
+        "cancellation.md",
+        "trust_safety.md",
+        "trust_safety.md"
+      ],
+      "retrieval_hit": true,
+      "rank": 1,
+      "reciprocal_rank": 1.0,
+      "expected_answer": "Hosts get $1,000,000 in property damage protection.",
+      "actual_answer": "Hosts get $1,000,000 in property damage protection.",
+      "scores": {
+        "answer_relevance": 5,
+        "answer_correctness": 5,
+        "faithfulness": 5
+      }
+    },
+    {
+      "question": "When do hosts receive their payout?",
+      "expected_source": "payments.md",
+      "retrieved_sources": [
+        "payments.md",
+        "for_hosts.md",
+        "payments.md",
+        "payments.md",
+        "cancellation.md"
+      ],
+      "retrieval_hit": true,
+      "rank": 1,
+      "reciprocal_rank": 1.0,
+      "expected_answer": "Host payouts are released 24 hours after guest check-in, with 3-5 business days processing.",
+      "actual_answer": "Hosts receive their payout 24 hours after guest check-in, with a processing time of 3-5 business days.",
+      "scores": {
+        "answer_relevance": 5,
+        "answer_correctness": 5,
+        "faithfulness": 5
+      }
+    },
+    {
+      "question": "What payment methods are accepted?",
+      "expected_source": "payments.md",
+      "retrieved_sources": [
+        "payments.md",
+        "faqs.md",
+        "for_hosts.md",
+        "payments.md",
+        "payments.md"
+      ],
+      "retrieval_hit": true,
+      "rank": 1,
+      "reciprocal_rank": 1.0,
+      "expected_answer": "Credit cards (Visa, Mastercard, Amex, Discover), debit cards, PayPal, Apple Pay, Google Pay, and gift cards.",
+      "actual_answer": "Accepted payment methods include credit cards (Visa, Mastercard, American Express, Discover), debit cards, PayPal, Apple Pay, Google Pay, and StayEasy gift cards.",
+      "scores": {
+        "answer_relevance": 5,
+        "answer_correctness": 5,
+        "faithfulness": 5
+      }
+    },
+    {
+      "question": "What is the emergency phone number?",
+      "expected_source": "trust_safety.md",
+      "retrieved_sources": [
+        "trust_safety.md",
+        "faqs.md",
+        "company.md",
+        "faqs.md",
+        "cancellation.md"
+      ],
+      "retrieval_hit": true,
+      "rank": 1,
+      "reciprocal_rank": 1.0,
+      "expected_answer": "The urgent safety line is 1-800-782-9111.",
+      "actual_answer": "The emergency phone number is 1-800-782-9111, available 24/7 for immediate safety concerns.",
+      "scores": {
+        "answer_relevance": 5,
+        "answer_correctness": 5,
+        "faithfulness": 5
+      }
+    },
+    {
+      "question": "How many photos are required for a listing?",
+      "expected_source": "for_hosts.md",
+      "retrieved_sources": [
+        "for_hosts.md",
+        "trust_safety.md",
+        "for_hosts.md",
+        "for_guests.md",
+        "pricing_fees.md"
+      ],
+      "retrieval_hit": true,
+      "rank": 1,
+      "reciprocal_rank": 1.0,
+      "expected_answer": "A minimum of 10 high-quality photos are required.",
+      "actual_answer": "At least 10 high-quality photos are required for a listing.",
+      "scores": {
+        "answer_relevance": 5,
+        "answer_correctness": 5,
+        "faithfulness": 5
+      }
+    }
+  ]
+}
