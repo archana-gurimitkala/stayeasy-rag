@@ -206,6 +206,9 @@ def main():
     # Metrics accumulators
     total = len(TEST_CASES)
     retrieval_hits = 0
+    recall_at_1 = 0
+    recall_at_3 = 0
+    recall_at_5 = 0
     all_reciprocal_ranks = []
     all_relevance = []
     all_correctness = []
@@ -225,6 +228,14 @@ def main():
         # Check if expected source was retrieved + compute reciprocal rank
         hit = test["expected_source"] in source_files
         retrieval_hits += 1 if hit else 0
+
+        # Calculate recall@k for k=1, 3, 5
+        if len(source_files) > 0 and test["expected_source"] in source_files[:1]:
+            recall_at_1 += 1
+        if len(source_files) > 0 and test["expected_source"] in source_files[:3]:
+            recall_at_3 += 1
+        if len(source_files) > 0 and test["expected_source"] in source_files[:5]:
+            recall_at_5 += 1
 
         if hit:
             rank = source_files.index(test["expected_source"]) + 1  # 1-indexed
@@ -277,13 +288,24 @@ def main():
     avg_correctness = sum(all_correctness) / total
     avg_faithfulness = sum(all_faithfulness) / total
     mrr = sum(all_reciprocal_ranks) / total
+    
+    # Calculate recall@k percentages
+    recall_at_1_pct = (recall_at_1 / total) * 100
+    recall_at_3_pct = (recall_at_3 / total) * 100
+    recall_at_5_pct = (recall_at_5 / total) * 100
 
     print(f"\n\n{'=' * 60}")
     print(f"  EVALUATION RESULTS")
     print(f"{'=' * 60}")
     print(f"  Total test cases:      {total}")
-    print(f"  Retrieval Accuracy:    {retrieval_hits}/{total} ({retrieval_hits/total*100:.0f}%)")
+    print(f"\n  RETRIEVAL METRICS:")
+    print(f"  ──────────────────────")
+    print(f"  Recall@1:              {recall_at_1}/{total} ({recall_at_1_pct:.1f}%)")
+    print(f"  Recall@3:              {recall_at_3}/{total} ({recall_at_3_pct:.1f}%)")
+    print(f"  Recall@5:              {recall_at_5}/{total} ({recall_at_5_pct:.1f}%)")
     print(f"  MRR (Mean Reciprocal Rank): {mrr:.4f}")
+    print(f"\n  ANSWER QUALITY METRICS:")
+    print(f"  ──────────────────────")
     print(f"  Avg Answer Relevance:  {avg_relevance:.2f}/5")
     print(f"  Avg Answer Correctness:{avg_correctness:.2f}/5")
     print(f"  Avg Faithfulness:      {avg_faithfulness:.2f}/5")
@@ -305,11 +327,17 @@ def main():
         json.dump({
             "summary": {
                 "total_cases": total,
-                "retrieval_accuracy": f"{retrieval_hits}/{total}",
-                "mrr": round(mrr, 4),
-                "avg_relevance": round(avg_relevance, 2),
-                "avg_correctness": round(avg_correctness, 2),
-                "avg_faithfulness": round(avg_faithfulness, 2),
+                "retrieval_metrics": {
+                    "recall_at_1": f"{recall_at_1}/{total} ({recall_at_1_pct:.1f}%)",
+                    "recall_at_3": f"{recall_at_3}/{total} ({recall_at_3_pct:.1f}%)",
+                    "recall_at_5": f"{recall_at_5}/{total} ({recall_at_5_pct:.1f}%)",
+                    "mrr": round(mrr, 4),
+                },
+                "answer_quality_metrics": {
+                    "avg_relevance": round(avg_relevance, 2),
+                    "avg_correctness": round(avg_correctness, 2),
+                    "avg_faithfulness": round(avg_faithfulness, 2),
+                },
                 "overall_score": round(overall, 1),
             },
             "details": results,
