@@ -1,138 +1,187 @@
 # StayEasy RAG - Customer Support Assistant
 
-A Retrieval-Augmented Generation (RAG) system for StayEasy vacation rental platform that provides intelligent customer support by answering questions based on company documentation.
+Ever wondered how to build a smart chatbot that actually knows your company's documentation? This project shows you how! It's a customer support assistant for StayEasy (a vacation rental platform) that can answer questions by searching through company documents and giving accurate answers.
 
-## 🚀 Features
+## What is RAG?
 
-- **Document-based Q&A**: Answers questions using StayEasy's official documentation
-- **Vector Search**: Uses ChromaDB for efficient semantic search
-- **Interactive CLI**: Command-line interface for querying the system
-- **Web UI**: Gradio-based web interface for easy interaction
-- **Evaluation System**: Built-in evaluation framework to test system performance
+RAG stands for **Retrieval-Augmented Generation**. Think of it like this:
+- Your documents are stored in a smart database
+- When someone asks a question, the system finds the most relevant parts
+- Then it uses AI to write a helpful answer based on what it found
 
-## 📋 Prerequisites
+It's like having a super-smart assistant who never forgets your company policies!
 
-- Python 3.9+
-- OpenAI API key
+## What Can This Do?
 
-## 🛠️ Installation
+✨ **Answer questions** - Ask anything about StayEasy policies, fees, cancellation rules, etc.
 
-1. Clone the repository:
+🔍 **Find the right info** - Automatically searches through all your documents to find relevant answers
+
+💬 **Two ways to use it** - Try it in your terminal or use the friendly web interface
+
+📊 **See how well it works** - Built-in evaluation tools show you how accurate the answers are
+
+## What You'll Need
+
+Before you start, make sure you have:
+- **Python 3.9 or newer** (check with `python --version`)
+- **An OpenAI API key** (get one at [platform.openai.com](https://platform.openai.com/api-keys))
+
+## Getting Started
+
+### 1. Get the Code
+
+First, download this project to your computer:
+
 ```bash
-git clone <your-repo-url>
-cd stayeasy_rag
+git clone https://github.com/archana-gurimitkala/stayeasy-rag.git
+cd stayeasy-rag
 ```
 
-2. Install dependencies:
+### 2. Install the Required Tools
+
+Install all the Python packages needed:
+
 ```bash
 pip install -r requirements.txt
 ```
 
-3. Set up environment variables:
-   - Create a `.env` file in the project root
-   - Add your OpenAI API key:
-   ```
-   OPENAI_API_KEY=your_api_key_here
-   ```
+This will install things like ChromaDB (for storing documents), OpenAI (for AI), and Gradio (for the web interface).
 
-## 📖 Usage
+### 3. Add Your API Key
 
-### Step 1: Ingest Documents
+Create a file called `.env` in the project folder and add your OpenAI API key:
 
-First, load and process the documentation files:
+```
+OPENAI_API_KEY=your_actual_api_key_here
+```
+
+**Important:** Don't share your API key! The `.env` file is already set to be ignored by git, so it won't be uploaded to GitHub.
+
+## How to Use It
+
+### Step 1: Load Your Documents
+
+Before you can ask questions, you need to load all the documents into the system:
 
 ```bash
 python ingest.py
 ```
 
-This will:
-- Load all markdown files from the `data/` folder
-- Chunk the documents into smaller pieces
-- Generate embeddings using sentence transformers
-- Store everything in ChromaDB
+What this does:
+- Reads all the markdown files from the `data/` folder
+- Breaks them into smaller, manageable pieces
+- Converts them into a format the AI can understand
+- Saves everything in a database
 
-### Step 2: Query the System
+You'll see it loading files and creating chunks. This might take a minute or two!
 
-#### Option A: Command Line Interface
+### Step 2: Ask Questions!
+
+Now the fun part - you can ask questions in two ways:
+
+#### Option A: Command Line (Terminal)
 
 ```bash
 python answer.py
 ```
 
-Then type your questions interactively. Type `quit` to exit.
+Then just type your questions! For example:
+- "When was StayEasy founded?"
+- "What is the cancellation policy?"
+- "How much is the host service fee?"
 
-#### Option B: Web Interface (Gradio)
+Type `quit` when you're done.
+
+#### Option B: Web Interface (Easier!)
 
 ```bash
 python app.py
 ```
 
-This will start a web server. Open the URL shown in the terminal (usually `http://127.0.0.1:7860`) in your browser.
+This opens a nice web page in your browser. You'll see:
+- A chat box where you can type questions
+- Answers appear right away
+- You can even see which documents were used to answer your question!
 
-### Step 3: Evaluate (Optional)
+The web address will be shown in your terminal (usually `http://127.0.0.1:7860`).
 
-Run the evaluation script to test the system's performance:
+### Step 3: Check How Well It Works (Optional)
+
+Want to see how accurate the system is? Run the evaluation:
 
 ```bash
 python evaluate.py
 ```
 
-Results will be saved to `evaluation_results.json`.
+This tests the system with 10 sample questions and shows you:
+- How often it finds the right document
+- How accurate the answers are
+- Whether it makes things up (we call this "hallucination")
 
-## 📁 Project Structure
+Results are saved to `evaluation_results.json` if you want to look at them later.
+
+## What's Inside This Project?
 
 ```
 stayeasy_rag/
-├── data/                  # Source documentation files
-│   ├── company.md
-│   ├── faqs.md
-│   ├── for_guests.md
-│   ├── for_hosts.md
-│   └── ...
-├── chroma_db/             # Vector database (auto-generated)
-├── screenshots/           # Project screenshots
-├── ingest.py              # Document ingestion script
-├── answer.py              # CLI query interface
-├── app.py                 # Gradio web interface
-├── evaluate.py            # Evaluation script
-├── requirements.txt       # Python dependencies
-├── .env                   # Environment variables (not in git)
-└── README.md              # This file
+├── data/                  # All the StayEasy documentation files
+│   ├── company.md         # Company info
+│   ├── faqs.md            # Frequently asked questions
+│   ├── for_guests.md      # Info for guests
+│   ├── for_hosts.md       # Info for hosts
+│   └── ...                # More docs
+├── chroma_db/             # The database (created automatically)
+├── screenshots/           # Pictures showing how it works
+├── ingest.py              # Script to load documents
+├── answer.py              # Command-line version
+├── app.py                 # Web interface version
+├── evaluate.py            # Testing script
+├── requirements.txt       # List of needed packages
+└── README.md              # This file!
 ```
 
-## 🔧 Configuration
+## Customizing It
 
-Key settings in the code:
+Want to change how it works? Here are some settings you can tweak:
 
-- `CHROMA_PATH`: Path to ChromaDB storage (default: `"chroma_db"`)
-- `COLLECTION_NAME`: ChromaDB collection name (default: `"stayeasy_docs"`)
-- `TOP_K`: Number of chunks to retrieve (default: `3-5`)
-- `CHUNK_SIZE`: Document chunk size (default: `500` characters)
-- `CHUNK_OVERLAP`: Overlap between chunks (default: `100` characters)
+- **`TOP_K`**: How many document chunks to look at (default: 5) - more chunks = more context but slower
+- **`CHUNK_SIZE`**: How big each piece of text is (default: 500 characters)
+- **`CHUNK_OVERLAP`**: How much overlap between chunks (default: 100 characters) - helps keep context
 
-## 📸 Screenshots
+You can find these in the Python files and adjust them to your needs.
 
-Add your project screenshots to the `screenshots/` folder. Some ideas:
-- Web interface in action
-- Example Q&A interactions
-- System architecture diagram
-- Performance metrics
+## See It in Action
 
-## 🤝 Contributing
+Check out the `screenshots/` folder to see:
+- The web interface in action
+- Example questions and answers
+- Performance metrics showing how well it works
+- Before/after improvements
 
-1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'Add some amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
+## Want to Contribute?
 
-## 📝 License
+Found a bug or have an idea? Here's how to help:
 
-This project is for educational/demonstration purposes.
+1. Fork this repository (make your own copy)
+2. Create a new branch for your changes
+3. Make your improvements
+4. Submit a pull request
 
-## 🙏 Acknowledgments
+We'd love to see what you build!
 
-- StayEasy for the documentation
-- OpenAI for GPT models
-- ChromaDB for vector storage
-- Sentence Transformers for embeddings
+## Credits
+
+Thanks to:
+- **StayEasy** for the documentation
+- **OpenAI** for the GPT models that power the answers
+- **ChromaDB** for storing and searching documents
+- **Sentence Transformers** for understanding text meaning
+
+## Questions?
+
+If something doesn't work or you're confused, feel free to open an issue on GitHub. We're here to help!
+
+---
+
+**Note:** This project is for learning and demonstration purposes. Feel free to use it as a starting point for your own RAG projects!
