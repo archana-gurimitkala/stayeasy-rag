@@ -6,7 +6,7 @@ This folder contains screenshots demonstrating the StayEasy RAG (Retrieval-Augme
 
 ## 1. Web Interface (Gradio UI)
 
-![Web Interface](Screenshot%202026-02-15%20at%208.33.07%20PM.png)
+![Web Interface](./Screenshot%202026-02-15%20at%208.33.07%20PM.png)
 
 **Description:**
 This screenshot shows the StayEasy RAG Customer Support Assistant web interface built with Gradio. The interface demonstrates:
@@ -27,7 +27,7 @@ This demonstrates the RAG system's ability to provide accurate answers while sho
 
 ## 2. Evaluation Metrics Table
 
-![Evaluation Metrics](Screenshot%202026-02-15%20at%208.34.48%20PM.png)
+![Evaluation Metrics](./Screenshot%202026-02-15%20at%208.34.48%20PM.png)
 
 **Description:**
 This screenshot displays a comprehensive evaluation metrics table showing the performance of the RAG system:
@@ -45,7 +45,7 @@ This table demonstrates the system's high-quality performance across all evaluat
 
 ## 3. Performance Improvement Report
 
-![Performance Improvement](Screenshot%202026-02-14%20at%205.28.36%20PM.png)
+![Performance Improvement](./Screenshot%202026-02-14%20at%205.28.36%20PM.png)
 
 **Description:**
 This screenshot shows the performance improvement report documenting the optimization journey:
@@ -81,7 +81,7 @@ This demonstrates the iterative improvement process and the impact of optimizati
 
 ## 4. Evaluation Results Summary
 
-![Evaluation Results](Screenshot%202026-02-14%20at%205.20.10%20PM.png)
+![Evaluation Results](./Screenshot%202026-02-14%20at%205.20.10%20PM.png)
 
 **Description:**
 This screenshot shows the initial evaluation results summary:
