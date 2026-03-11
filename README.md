@@ -4,7 +4,7 @@ A chatbot that answers questions about a vacation rental company using RAG (Retr
 
 ## About This Project
 
-I built this project to learn how RAG works after completing Ed Donner's LLM Engineering course (Week 5).
+This was my hands-on project for learning RAG, and it was the week things really clicked for me around how retrieval actually works. I built a chatbot for a fictional vacation rental company — it reads through company documents, converts them into embeddings, stores them in ChromaDB, and retrieves the right context before answering with GPT. Building it from scratch made the whole "retrieval before generation" idea finally make sense.
 
 The idea: Create fake company documents, store them in a vector database, and let users ask questions. The system finds relevant info and generates answers.
 
