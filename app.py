@@ -368,6 +368,7 @@ with gr.Blocks(title="StayEasy RAG") as demo:
                     chatbot = gr.Chatbot(
                         label="StayEasy Assistant",
                         height=500,
+                        type="messages",
                     )
                     with gr.Row():
                         msg = gr.Textbox(
