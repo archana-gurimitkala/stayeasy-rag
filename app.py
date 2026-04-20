@@ -22,6 +22,45 @@ load_dotenv()
 CHROMA_PATH = "chroma_db"
 COLLECTION_NAME = "stayeasy_docs"
 TOP_K = 5
+DATA_FOLDER = "data"
+
+# ============================================================
+# AUTO-INGEST: build vector DB at startup if not present
+# ============================================================
+
+def build_vector_db():
+    from pathlib import Path
+    print("Building vector database from documents...")
+    embedding_model_tmp = SentenceTransformer("all-MiniLM-L6-v2")
+    client_tmp = chromadb.PersistentClient(path=CHROMA_PATH)
+    try:
+        client_tmp.delete_collection(COLLECTION_NAME)
+    except Exception:
+        pass
+    collection_tmp = client_tmp.create_collection(name=COLLECTION_NAME)
+
+    chunks = []
+    for file_path in Path(DATA_FOLDER).glob("*.md"):
+        content = file_path.read_text(encoding="utf-8")
+        # simple paragraph chunking
+        paragraphs = [p.strip() for p in content.split("\n\n") if p.strip()]
+        for i, para in enumerate(paragraphs):
+            chunks.append({"text": para, "filename": file_path.name, "chunk_id": str(i), "heading": ""})
+
+    texts = [c["text"] for c in chunks]
+    ids = [f"{c['filename']}_{c['chunk_id']}" for c in chunks]
+    metadatas = [{"filename": c["filename"], "chunk_id": c["chunk_id"], "heading": c["heading"]} for c in chunks]
+    embeddings = embedding_model_tmp.encode(texts).tolist()
+    collection_tmp.add(documents=texts, embeddings=embeddings, ids=ids, metadatas=metadatas)
+    print(f"Built vector DB with {len(chunks)} chunks.")
+
+chroma_client_check = chromadb.PersistentClient(path=CHROMA_PATH)
+try:
+    col_check = chroma_client_check.get_collection(COLLECTION_NAME)
+    if col_check.count() == 0:
+        raise Exception("empty")
+except Exception:
+    build_vector_db()
 
 # ============================================================
 # LOAD MODELS (once at startup)
