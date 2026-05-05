@@ -1,97 +1,123 @@
 ---
-title: StayEasy RAG
-emoji: 🏠
-colorFrom: blue
-colorTo: green
-sdk: gradio
-sdk_version: "5.25.0"
-app_file: app.py
-pinned: false
+# StayEasy RAG — Vacation Rental Q&A Chatbot
+
+> Ask any question about StayEasy's policies, pricing, and features — get answers backed by the exact source document and page.
+
 ---
 
-# StayEasy RAG
+## The Story Behind This
 
-A chatbot that answers questions about a vacation rental company using RAG (Retrieval-Augmented Generation).
+This was my first RAG project, built while learning from Ed Donner's LLM Engineering course (Week 5). The goal was simple: take a set of company documents and make them conversational.
 
-## About This Project
+It taught me the fundamentals — chunking, embeddings, vector search, retrieval, generation. Everything I later improved in BenefitsAI (hybrid search, reranking, RAGAS evaluation) started with the lessons from building this.
 
-I built this project to learn how RAG works after completing Ed Donner's LLM Engineering course (Week 5).
-
-The idea: Create fake company documents, store them in a vector database, and let users ask questions. The system finds relevant info and generates answers.
+---
 
 ## How It Works
 
-1. Created 9 documents for a fake company "StayEasy" (like Airbnb)
-2. Split documents into small chunks
-3. Converted chunks to embeddings using Sentence Transformers
-4. Stored everything in ChromaDB
-5. When user asks a question - search for similar chunks, send to GPT, get answer
-
-## Example
-
 ```
-User: "What is the cancellation policy?"
-
-System finds relevant chunks from cancellation.md
-        ↓
-Sends to GPT with context
-        ↓
-Answer: "StayEasy has 3 policies: Flexible, Moderate, and Strict..."
+9 markdown documents → markdown-aware chunking → Sentence Transformer embeddings → ChromaDB → GPT-4o-mini answer
 ```
 
-## Files
+### Chunking Strategy
+Unlike naive fixed-size chunking, this uses **markdown-aware hierarchical splitting**:
+1. Split by H2 headings first — keeps sections together
+2. If section > 800 chars, split at H3 boundaries
+3. If still too large, split at paragraph breaks
 
-```
-data/               # 9 fake company documents
-├── company.md
-├── for_guests.md
-├── for_hosts.md
-├── pricing_fees.md
-├── cancellation.md
-├── payments.md
-├── trust_safety.md
-├── superhost.md
-└── faqs.md
+Each chunk stores: source filename, heading path, chunk ID, text. This means retrieval results tell you exactly where in the document the answer came from.
 
-ingest.py           # Load and embed documents
-answer.py           # Answer questions (terminal)
-app.py              # Gradio web interface
-evaluate.py         # Test the system
-```
+### Retrieval
+- Embed the question using `all-MiniLM-L6-v2` (SentenceTransformers, runs locally)
+- Query ChromaDB for top 5 most similar chunks
+- Pass chunks as context to GPT-4o-mini
 
-## How to Run
-
-```bash
-# Install dependencies
-pip install -r requirements.txt
-
-# Add your OpenAI key
-echo "OPENAI_API_KEY=your-key" > .env
-
-# Load documents into database
-python ingest.py
-
-# Run the chatbot
-python answer.py
-
-# Or use web interface
-python app.py
-```
-
-## What I Learned
-
-- How RAG works (retrieve then generate)
-- How embeddings convert text to numbers
-- How vector databases search by similarity
-- How to build a chatbot with Gradio
-
-## Tools
-
-- Sentence Transformers (embeddings)
-- ChromaDB (vector database)
-- OpenAI API (GPT for answers)
-- Gradio (web UI)
+### Generation
+- GPT-4o-mini generates the answer from retrieved chunks only
+- Answer is grounded — if it's not in the documents, it says so
 
 ---
 
-Built while learning from Ed Donner's LLM Engineering Course (Week 5 - RAG)
+## Evaluation
+
+Built a custom evaluation pipeline (`evaluate.py`) with an LLM-as-judge approach across 10 test cases covering all 9 source documents.
+
+| Metric | Score |
+|--------|-------|
+| Retrieval Accuracy | 10/10 (100%) |
+| Mean Reciprocal Rank (MRR) | 0.95 |
+| Avg Answer Relevance | 5.0 / 5 |
+| Avg Answer Correctness | 4.9 / 5 |
+| Avg Faithfulness | 5.0 / 5 |
+| **Overall Score** | **98.6 / 100** |
+
+**How scoring works:** Five equally weighted components (20% each) — MRR, relevance, correctness, faithfulness, retrieval hit rate. GPT-4o-mini acts as judge for the answer quality metrics.
+
+---
+
+## What I Learned Here vs BenefitsAI
+
+| | StayEasy | BenefitsAI |
+|--|---------|-----------|
+| Retrieval | Vector search only | Hybrid (BM25 + vector) |
+| Reranking | None | Cross-encoder reranking |
+| Chunking | Markdown-aware, 800 chars | Fixed 400 chars with overlap |
+| Evaluation | Custom LLM judge | RAGAS framework |
+| Eval score | 98.6/100 | 0.95/1.0 |
+| Multi-user | Shared DB | Per-session isolated DB |
+
+StayEasy scored higher on evaluation — but it's a controlled domain (9 known documents, 10 test cases). BenefitsAI handles arbitrary user-uploaded PDFs, which is a harder problem.
+
+---
+
+## Tech Stack
+
+| Component | Tool |
+|-----------|------|
+| Documents | 9 markdown files (company policies, pricing, host/guest guides) |
+| Chunking | Custom markdown-aware splitter |
+| Embeddings | SentenceTransformers (all-MiniLM-L6-v2) — local, free |
+| Vector DB | ChromaDB |
+| LLM | GPT-4o-mini (OpenAI) |
+| UI | Gradio |
+| Evaluation | Custom LLM-as-judge pipeline |
+
+---
+
+## Running Locally
+
+```bash
+git clone https://github.com/archana-gurimitkala/stayeasy-rag
+cd stayeasy-rag
+pip install -r requirements.txt
+
+# Add your OpenAI API key
+echo "OPENAI_API_KEY=your_key_here" > .env
+
+# Ingest documents into ChromaDB
+python ingest.py
+
+# Run the app
+python app.py
+# or CLI mode:
+python answer.py
+```
+
+---
+
+## Files
+
+| File | Purpose |
+|------|---------|
+| `ingest.py` | Chunks documents, creates embeddings, stores in ChromaDB |
+| `answer.py` | CLI chat interface |
+| `app.py` | Gradio web UI with chat + evaluation tabs |
+| `evaluate.py` | Runs 10-question evaluation, saves results to JSON |
+| `data/` | 9 markdown documents (company, pricing, policies, etc.) |
+| `evaluation_results.json` | Last evaluation run results |
+
+---
+
+Built by [Archana Gurimitkala](https://github.com/archana-gurimitkala)
+
+*This was the starting point. [BenefitsAI](https://github.com/archana-gurimitkala/-benefits-copilot-) is where it went next.*
